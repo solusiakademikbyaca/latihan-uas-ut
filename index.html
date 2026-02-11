@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Latihan Soal UAS UT by Jokitoefl.my.id</title>
+  <style>
+    :root{
+      --navy:#002D5F;
+      --accent:#A1C0F8;
+      --black:#000;
+      --white:#fff;
+    }
+    body{
+      margin:0;
+      font-family: Calibri, "Times New Roman", serif;
+      background: var(--white);
+      color: var(--black);
+    }
+    .topbar{
+      background: var(--navy);
+      color: var(--white);
+      padding: 16px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .brand img{
+      width:34px; height:34px;
+      object-fit:contain;
+    }
+    .brand-title{
+      font-size:14px;
+      line-height:1.2;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:72vw;
+    }
+    .container{
+      max-width: 920px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+    .card{
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      padding: 18px;
+    }
+    .badge{
+      display:inline-block;
+      background: rgba(0,45,95,0.10);
+      border: 1px solid rgba(0,45,95,0.25);
+      color: var(--navy);
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.35;
+      margin-bottom: 14px;
+    }
+    h1{
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      color: var(--navy);
+    }
+    .grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+    }
+    label{
+      font-size: 13px;
+      display:block;
+      margin-bottom: 6px;
+      color: rgba(0,0,0,0.75);
+    }
+    input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.20);
+      font-size: 15px;
+      outline:none;
+    }
+    input:focus{
+      border-color: rgba(0,45,95,0.55);
+      box-shadow: 0 0 0 3px rgba(161,192,248,0.55);
+    }
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 12px;
+    }
+    button{
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor:pointer;
+      font-size: 14px;
+      font-weight: 700;
+      min-width: 140px;
+    }
+    button:disabled{
+      opacity:0.6;
+      cursor:not-allowed;
+    }
+    .hint{
+      font-size: 13px;
+      color: rgba(0,0,0,0.70);
+    }
+    .error{
+      margin-top: 10px;
+      font-size: 13px;
+      color: #b00020;
+      display:none;
+    }
+    .ok{
+      margin-top: 10px;
+      font-size: 13px;
+      color: #0a6b2f;
+      display:none;
+    }
+    @media (min-width: 720px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+      .brand-title{ max-width: 520px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <!-- Ganti assets/logo.png dengan file logo kamu (kita atur di tahap berikutnya) -->
+      <img src="assets/logo.png" alt="Logo" onerror="this.style.display='none'">
+      <div class="brand-title">Latihan Soal UAS UT by Jokitoefl.my.id</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div class="badge">
+        Akun ini bersifat personal. Jika terindikasi dibagikan, akses dapat dicabut (revoke).
+      </div>
+
+      <h1>Login</h1>
+
+      <form id="loginForm">
+        <div class="grid">
+          <div>
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="username" placeholder="Contoh: MKPANCASILA1" required />
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnLogin" type="submit">Masuk</button>
+          <div class="hint">Gunakan username & password yang kamu terima via WhatsApp.</div>
+        </div>
+
+        <div id="msgError" class="error"></div>
+        <div id="msgOk" class="ok"></div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const WORKER_BASE = "https://jokitoefl-gate.meimeibkn.workers.dev";
+
+    const form = document.getElementById("loginForm");
+    const btn = document.getElementById("btnLogin");
+    const msgError = document.getElementById("msgError");
+    const msgOk = document.getElementById("msgOk");
+
+    function showError(text){
+      msgOk.style.display = "none";
+      msgError.textContent = text;
+      msgError.style.display = "block";
+    }
+    function showOk(text){
+      msgError.style.display = "none";
+      msgOk.textContent = text;
+      msgOk.style.display = "block";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msgError.style.display = "none";
+      msgOk.style.display = "none";
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if(!username || !password){
+        showError("Username dan password wajib diisi.");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Memproses...";
+
+      try{
+        const res = await fetch(`${WORKER_BASE}/api/login`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if(!res.ok || !data.ok){
+          showError(data.error || "Login gagal.");
+          return;
+        }
+
+        showOk(`Login berhasil: ${data.username}. Mengalihkan...`);
+        // lanjut ke tahap berikutnya (name prompt)
+        setTimeout(() => { window.location.href = "name.html"; }, 600);
+
+      }catch(err){
+        showError("Tidak bisa menghubungi server. Coba lagi.");
+      }finally{
+        btn.disabled = false;
+        btn.textContent = "Masuk";
+      }
+    });
+  </script>
+</body>
+</html>
